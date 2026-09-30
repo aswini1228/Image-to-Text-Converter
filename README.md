@@ -1,38 +1,40 @@
-#  AI Attention Visualizer
+#  AI Text Insight Visualizer
 
-An AI-based application that extracts text from an image using OCR and visualizes word-level attention using an attention mechanism.
+An AI-powered application that extracts text from uploaded images using OCR and analyzes word-level importance using an attention mechanism.
 
-##  Features
+##  Live Application
 
-- Upload an image
-- Extract text using OCR
-- Process extracted words
-- Generate word embeddings
-- Calculate attention scores
-- Visualize attention using progress bars
-- Identify the highest-attention word
+https://ai-text-insight-visualizer.streamlit.app/
+
+## Features
+
+-  Upload an image containing text
+-  Extract text using OCR
+-  Process extracted words
+-  Generate word embeddings
+-  Calculate word-level attention scores
+-  Visualize attention scores using progress bars
+-  Identify the highest-attention word
 
 ##  Workflow
 
-Image
-↓
-OCR
-↓
-Extracted Text
-↓
-Word Processing
-↓
-Word Embeddings
-↓
-Attention Mechanism
-↓
-Softmax
-↓
-Attention Scores
-↓
-Visualization
+Image Upload  
+↓  
+OCR Text Extraction  
+↓  
+Word Processing  
+↓  
+Word Embeddings  
+↓  
+Attention Mechanism  
+↓  
+Softmax  
+↓  
+Attention Score Visualization  
+↓  
+Highest Attention Word
 
-##  Technologies
+##  Technologies Used
 
 - Python
 - Streamlit
@@ -43,21 +45,28 @@ Visualization
 
 ##  Attention Mechanism
 
-The application calculates similarity between each word embedding and the overall query representation.
+The application generates numerical representations for extracted words and calculates their similarity with an overall query representation.
 
-The scores are converted into normalized attention weights using Softmax.
+The resulting scores are normalized using the **Softmax function** to obtain attention weights.
 
 ### Softmax Formula
 
-Attention Weight:
+\[
+Attention\ Weight_i =
+\frac{e^{score_i}}
+{\sum_j e^{score_j}}
+\]
 
-e^score / Σ e^score
+##  Objective
 
-##  Application
+The main objective of this project is to demonstrate how OCR, word embeddings, and attention mechanisms can be combined to analyze and visualize important words from text extracted from images.
 
-This project demonstrates how attention mechanisms can be used to identify important words from text extracted from images.
+##  Use Case
+
+This application can be used to analyze text from documents, interview-related content, educational materials, and other image-based text sources.
 
 ##  Author
 
-Aswini S
+**Aswini S**  
 B.Sc Computer Science with Artificial Intelligence
+
