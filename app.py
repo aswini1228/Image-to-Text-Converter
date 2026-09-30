@@ -1,44 +1,51 @@
 import streamlit as st
 from PIL import Image
-import pytesseract
+from preprocessing import preprocess_image
+from ocr import extract_text
 
 st.set_page_config(
     page_title="Image to Text Converter",
-    page_icon="📝"
+    page_icon="📝",
+    layout="wide"
 )
 
 st.title("📝 Image to Text Converter")
-st.write("Upload an image and extract the text using OCR.")
+st.write("Upload a PNG image and extract the text using OCR.")
 
 uploaded_file = st.file_uploader(
-    "Upload your image",
-    type=["png", "jpg", "jpeg"]
+    "Upload your PNG image",
+    type=["png"]
 )
 
-if uploaded_file:
+if uploaded_file is not None:
+
     image = Image.open(uploaded_file)
 
-    st.subheader("Uploaded Image")
+    st.subheader("📷 Uploaded Image")
     st.image(image, use_container_width=True)
 
-    if st.button("Extract Text"):
+    if st.button("🔍 Extract Text"):
 
-        text = pytesseract.image_to_string(image)
+        processed_image = preprocess_image(image)
 
-        st.subheader("Extracted Text")
+        extracted_text = extract_text(processed_image)
 
-        if text.strip():
+        st.subheader("📝 Extracted Text")
+
+        if extracted_text.strip():
+
             st.text_area(
-                "Text",
-                text,
+                "Recognized Text",
+                extracted_text,
                 height=300
             )
 
             st.download_button(
-                "Download Text",
-                text,
+                label="📥 Download Text",
+                data=extracted_text,
                 file_name="extracted_text.txt",
                 mime="text/plain"
             )
+
         else:
             st.warning("No text found in the image.")
