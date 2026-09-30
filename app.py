@@ -1,20 +1,28 @@
 import streamlit as st
 from PIL import Image
-from preprocessing import preprocess_image
+
 from ocr import extract_text
+from embedding import create_embeddings
+from attention import calculate_attention
+
 
 st.set_page_config(
-    page_title="Image to Text Converter",
-    page_icon="📝",
+    page_title="AI Attention Visualizer",
+    page_icon="🧠",
     layout="wide"
 )
 
-st.title("📝 Image to Text Converter")
-st.write("Upload a PNG image and extract the text using OCR.")
+st.title("🧠 AI Attention Visualizer")
+st.write(
+    "Convert image text into words and visualize "
+    "word-level attention using an attention mechanism."
+)
+
+st.divider()
 
 uploaded_file = st.file_uploader(
-    "Upload your PNG image",
-    type=["png"]
+    "📷 Upload an Image",
+    type=["png", "jpg", "jpeg"]
 )
 
 if uploaded_file is not None:
@@ -24,28 +32,82 @@ if uploaded_file is not None:
     st.subheader("📷 Uploaded Image")
     st.image(image, use_container_width=True)
 
-    if st.button("🔍 Extract Text"):
+    st.divider()
 
-        processed_image = preprocess_image(image)
+    # OCR
+    extracted_text = extract_text(image)
 
-        extracted_text = extract_text(processed_image)
+    st.subheader("📄 Extracted Text")
 
-        st.subheader("📝 Extracted Text")
+    if extracted_text.strip():
 
-        if extracted_text.strip():
+        st.text_area(
+            "OCR Output",
+            extracted_text,
+            height=200
+        )
 
-            st.text_area(
-                "Recognized Text",
-                extracted_text,
-                height=300
+        st.divider()
+
+        # Word Processing
+        words = extracted_text.split()
+
+        st.subheader("🔤 Processed Words")
+
+        st.write(", ".join(words))
+
+        st.success(
+            f"Processed {len(words)} words."
+        )
+
+        st.divider()
+
+        # Embeddings
+        embeddings = create_embeddings(words)
+
+        st.subheader("🔢 Word Embeddings")
+
+        st.write(
+            f"Embedding generated for {len(embeddings)} words."
+        )
+
+        st.divider()
+
+        # Attention
+        attention_scores = calculate_attention(
+            embeddings
+        )
+
+        st.subheader("🧠 Word Attention")
+
+        for word, score in zip(
+            words,
+            attention_scores
+        ):
+
+            st.write(
+                f"**{word}** — {score:.3f}"
             )
 
-            st.download_button(
-                label="📥 Download Text",
-                data=extracted_text,
-                file_name="extracted_text.txt",
-                mime="text/plain"
+            st.progress(
+                float(score)
             )
 
-        else:
-            st.warning("No text found in the image.")
+        st.divider()
+
+        # Highest attention
+        highest_index = attention_scores.index(
+            max(attention_scores)
+        )
+
+        highest_word = words[highest_index]
+
+        st.success(
+            f"⭐ Highest Attention Word: **{highest_word}**"
+        )
+
+    else:
+
+        st.warning(
+            "⚠️ No text detected in the image."
+        )
