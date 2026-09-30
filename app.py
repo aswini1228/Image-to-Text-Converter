@@ -7,12 +7,13 @@ from attention import calculate_attention
 
 
 st.set_page_config(
-    page_title="AI Attention Visualizer",
+    page_title="AI Text Insight Visualizer",
     page_icon="🧠",
     layout="wide"
 )
 
-st.title("🧠 AI Attention Visualizer")
+st.title("🧠 AI Text Insight Visualizer")
+
 st.write(
     "Convert image text into words and visualize "
     "word-level attention using an attention mechanism."
@@ -80,22 +81,27 @@ if uploaded_file is not None:
 
         st.subheader("🧠 Word Attention")
 
+        # Normalize scores only for visualization
+        max_score = max(attention_scores)
+
         for word, score in zip(
             words,
             attention_scores
         ):
+
+            normalized_score = score / max_score
 
             st.write(
                 f"**{word}** — {score:.3f}"
             )
 
             st.progress(
-                float(score)
+                float(normalized_score)
             )
 
         st.divider()
 
-        # Highest attention
+        # Highest Attention Word
         highest_index = attention_scores.index(
             max(attention_scores)
         )
