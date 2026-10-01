@@ -4,7 +4,7 @@ An AI-powered application that extracts text from uploaded images using OCR and 
 
 ##  Live Application
 
-https://ai-text-insight-visualizer.streamlit.app/
+https://image-to-text-converter-594b9cnmewuccnolqui8dh.streamlit.app/
 
 ## Features
 
